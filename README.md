@@ -31,6 +31,7 @@ ___
 ### Build
 Make sure, that Docker is opened and run
 ```bash
+cp .env.example .env
 docker compose build
 docker-compose up -d
 ```
