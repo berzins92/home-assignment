@@ -32,16 +32,13 @@ RUN if ! pecl list | grep -q "xdebug"; then \
     && docker-php-ext-enable xdebug
 
 # Install Composer (PHP dependency manager)
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-COPY .env.example .env
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-
-# Copy custom php.ini file for PHP configuration
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY ./Docker/php.ini /usr/local/etc/php/conf.d/
 
-# Copy the application code into the container
 COPY . /var/www/html
 WORKDIR /var/www/html
+
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 RUN chown -R www-data:www-data /var/www/html
 
