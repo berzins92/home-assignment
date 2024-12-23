@@ -1,6 +1,7 @@
 # Use the official PHP 8.3 image with FPM (FastCGI Process Manager)
 FROM php:8.3-fpm
 
+# Set working directory in the container
 WORKDIR /var/www/html
 
 # Install system dependencies
@@ -24,24 +25,27 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-enable bcmath
 
+#Xdebug
+# Install Xdebug if not already installed
+RUN if ! pecl list | grep -q "xdebug"; then \
+        pecl install xdebug; \
+    else \
+        echo "Xdebug already installed"; \
+    fi \
+    && docker-php-ext-enable xdebug
+
 # Install Composer (PHP dependency manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Copy custom php.ini configuration file (if you have any custom settings)
-COPY ./Docker/php.ini /usr/local/etc/php/conf.d/
+# Copy custom php.ini file for PHP configuration
+COPY ./php.ini /usr/local/etc/php/conf.d/
 
-# Copy the Laravel application files into the container
-COPY . /var/www/html
+# Copy the application code into the container
+COPY . /var/www/app
+WORKDIR /var/www/app
 
-# Set proper file permissions to avoid permission issues
+
 RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 775 /var/www/html
 
-# Install Composer dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-
-# Expose port 8000 for PHP-FPM to work with Laravel's built-in server
-EXPOSE 8000
-
-# Set the entry point to start PHP-FPM
+# Start PHP-FPM
 CMD ["php-fpm"]
