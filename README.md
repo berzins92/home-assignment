@@ -5,9 +5,10 @@ Clone repository
 git clone https://github.com/berzins92/home-assignment.git
 ```
 
-Check if `master` branch is up to date
+Go to project folder and heck if `master` branch is up to date
 ```bash
-git pull origin master
+cd home-assignment
+git pull origin main
 ```
 ___
 ### Environment

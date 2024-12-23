@@ -38,7 +38,7 @@ RUN if ! pecl list | grep -q "xdebug"; then \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Copy custom php.ini file for PHP configuration
-COPY ./php.ini /usr/local/etc/php/conf.d/
+COPY ./Docker/php.ini /usr/local/etc/php/conf.d/
 
 # Copy the application code into the container
 COPY . /var/www/app
