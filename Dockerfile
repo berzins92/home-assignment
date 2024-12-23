@@ -1,6 +1,8 @@
 # Use the official PHP 8.3 image with FPM (FastCGI Process Manager)
 FROM php:8.3-fpm
 
+WORKDIR /var/www/html
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     libpng-dev \
@@ -21,26 +23,6 @@ RUN apt-get update && apt-get install -y \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-enable bcmath
-
-# Install Xdebug if not already installed
-RUN if ! pecl list | grep -q "xdebug"; then \
-        pecl install xdebug; \
-    else \
-        echo "Xdebug already installed"; \
-    fi \
-    && docker-php-ext-enable xdebug
-
-# Enable the bcmath extension
-RUN docker-php-ext-enable bcmath
-
-# Install Composer (PHP dependency manager)
-# Install Xdebug if not already installed
-RUN if ! pecl list | grep -q "xdebug"; then \
-        pecl install xdebug; \
-    else \
-        echo "Xdebug already installed"; \
-    fi \
-    && docker-php-ext-enable xdebug
 
 # Install Composer (PHP dependency manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
