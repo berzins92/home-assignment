@@ -43,8 +43,6 @@ COPY ./Docker/php.ini /usr/local/etc/php/conf.d/
 # Copy the application code into the container
 COPY . /var/www/app
 WORKDIR /var/www/app
-COPY .env.example .env
-
 
 RUN chown -R www-data:www-data /var/www/html
 
