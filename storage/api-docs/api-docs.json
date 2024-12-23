@@ -1,0 +1,226 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Test task API Documentation",
+        "description": "API Documentation for the distribution service",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/distribution": {
+            "get": {
+                "tags": [
+                    "Distribution Service"
+                ],
+                "summary": "Get all distributions",
+                "operationId": "getAllDistributions",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": "6a7694b9-5be3-4951-964b-2693d6a8003f"
+                                            },
+                                            "amount": {
+                                                "type": "integer",
+                                                "example": 1000
+                                            },
+                                            "distribution": {
+                                                "properties": {
+                                                    "investment_a": {
+                                                        "type": "integer",
+                                                        "example": 500
+                                                    },
+                                                    "investment_b": {
+                                                        "type": "integer",
+                                                        "example": 300
+                                                    },
+                                                    "investment_c": {
+                                                        "type": "integer",
+                                                        "example": 200
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Distribution Service"
+                ],
+                "summary": "Distributes an amount of money among multiple investors based on their respective investment rates.",
+                "operationId": "distribute",
+                "requestBody": {
+                    "description": "Request body for distributing money htorugh multiple investors. All provided rates sum of the values must equal to 1.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "amount",
+                                    "rates"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "description": "The amount to distribute in cents",
+                                        "type": "integer",
+                                        "example": 1000
+                                    },
+                                    "rates": {
+                                        "description": "Investment distribution rates",
+                                        "type": "object",
+                                        "example": {
+                                            "investment_a": 0.5,
+                                            "investment_b": 0.3,
+                                            "investment_c": 0.2
+                                        },
+                                        "additionalProperties": {
+                                            "schema": "InvestmentRate",
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 0.5
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/distribution/roundings": {
+            "get": {
+                "tags": [
+                    "Distribution Service"
+                ],
+                "summary": "Get all rouding details for all distributions",
+                "operationId": "getRoundingDetailsForDistributions",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "example": "6a7694b9-5be3-4951-964b-2693d6a8003f"
+                                            },
+                                            "roundings": {
+                                                "properties": {
+                                                    "investment_a": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 0.8
+                                                    },
+                                                    "investment_b": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 0.7
+                                                    },
+                                                    "investment_c": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 0.5
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "total": {
+                                                "type": "integer",
+                                                "example": 2
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "InvestmentRate": {
+                "type": "number",
+                "format": "float",
+                "example": 0.5
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Distribution Service",
+            "description": "Distribution Service"
+        }
+    ]
+}

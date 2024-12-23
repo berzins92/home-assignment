@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  title: My Laravel API
+  description: API documentation for My Laravel App
+  version: 1.0.0
+paths:
+  /api/route1:
+    get:
+      summary: "Get Route 1"
+      description: "This is the first API route"
+      responses:
+        '200':
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "This is route 1"
+  /api/route2:
+    post:
+      summary: "Post to Route 2"
+      description: "This is the second API route"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "John Doe"
+      responses:
+        '200':
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Data posted successfully"
+  /api/route3:
+    put:
+      summary: "Update Route 3"
+      description: "This is the third API route"
+      responses:
+        '200':
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Route 3 updated successfully"

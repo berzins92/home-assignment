@@ -1,0 +1,20 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - app
+        - config
+        - Domain
+
+    # The level 9 is the highest level
+    level: 6
+
+    ignoreErrors:
+        - '#PHPDoc tag @var#'
+
+    parallel:
+        maximumNumberOfProcesses: 4
+
+    noUnnecessaryCollectionCall: false
