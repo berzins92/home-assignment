@@ -63,7 +63,7 @@ docker-compose exec lande-task php artisan l5-swagger:generate
 ___
 Test if page is working and you see phpinfo
 ```bash
-https://localhost:8000
+http://localhost:8000
 ```
 
 ### Testing
