@@ -41,8 +41,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY ./Docker/php.ini /usr/local/etc/php/conf.d/
 
 # Copy the application code into the container
-COPY . /var/www/app
-WORKDIR /var/www/app
+COPY . /var/www/html
+WORKDIR /var/www/html
 
 RUN chown -R www-data:www-data /var/www/html
 
