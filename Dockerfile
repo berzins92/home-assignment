@@ -39,7 +39,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Copy custom php.ini file for PHP configuration
 COPY ./Docker/php.ini /usr/local/etc/php/conf.d/
-COPY .env.example .env
+COPY ./.env.example .env
 
 # Copy the application code into the container
 COPY . /var/www/app
