@@ -36,6 +36,11 @@ docker compose build
 docker-compose up -d
 ```
 
+Install composer dependencies
+```bash
+docker-compose exec lande-task composer install 
+```
+
 Generate laravel key
 ```bash
 docker-compose exec lande-task php artisan:key generate 
