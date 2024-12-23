@@ -30,27 +30,36 @@ RUN if ! pecl list | grep -q "xdebug"; then \
     fi \
     && docker-php-ext-enable xdebug
 
+# Enable the bcmath extension
+RUN docker-php-ext-enable bcmath
+
+# Install Composer (PHP dependency manager)
+# Install Xdebug if not already installed
+RUN if ! pecl list | grep -q "xdebug"; then \
+        pecl install xdebug; \
+    else \
+        echo "Xdebug already installed"; \
+    fi \
+    && docker-php-ext-enable xdebug
+
 # Install Composer (PHP dependency manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Copy custom php.ini configuration file
+# Copy custom php.ini configuration file (if you have any custom settings)
 COPY ./Docker/php.ini /usr/local/etc/php/conf.d/
 
-# Set working directory in the container
-WORKDIR /var/www/html
+# Copy the Laravel application files into the container
+COPY . /var/www/html
 
-# Copy the application code to the container
-COPY . .
-
-# Ensure the permissions are correct for the copied files
+# Set proper file permissions to avoid permission issues
 RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 775 /var/www/html
 
-COPY .env.example .env
 # Install Composer dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Set the user to run the container as
-USER www-data
+# Expose port 8000 for PHP-FPM to work with Laravel's built-in server
+EXPOSE 8000
 
-# Start PHP-FPM
+# Set the entry point to start PHP-FPM
 CMD ["php-fpm"]
