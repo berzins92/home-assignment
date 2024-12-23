@@ -44,7 +44,6 @@ COPY ./php.ini /usr/local/etc/php/conf.d/
 COPY . /var/www/app
 WORKDIR /var/www/app
 
-
 RUN chown -R www-data:www-data /var/www/html
 
 # Start PHP-FPM
