@@ -22,7 +22,6 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-enable bcmath
 
-#Xdebug
 # Install Xdebug if not already installed
 RUN if ! pecl list | grep -q "xdebug"; then \
         pecl install xdebug; \
@@ -32,15 +31,26 @@ RUN if ! pecl list | grep -q "xdebug"; then \
     && docker-php-ext-enable xdebug
 
 # Install Composer (PHP dependency manager)
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Copy custom php.ini configuration file
 COPY ./Docker/php.ini /usr/local/etc/php/conf.d/
 
-COPY . /var/www/html
+# Set working directory in the container
 WORKDIR /var/www/html
 
+# Copy the application code to the container
+COPY . .
+
+# Ensure the permissions are correct for the copied files
+RUN chown -R www-data:www-data /var/www/html
+
+COPY .env.example .env
+# Install Composer dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/html
+# Set the user to run the container as
+USER www-data
 
 # Start PHP-FPM
 CMD ["php-fpm"]
