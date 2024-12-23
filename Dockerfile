@@ -1,5 +1,5 @@
 # Use the official PHP 8.3 image with FPM (FastCGI Process Manager)
-FROM php:8.3-fpm-alpine
+FROM php:8.3-fpm
 
 # Set working directory in the container
 WORKDIR /var/www/html
