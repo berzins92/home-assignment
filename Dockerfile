@@ -33,6 +33,8 @@ RUN if ! pecl list | grep -q "xdebug"; then \
 
 # Install Composer (PHP dependency manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+COPY .env.example .env
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Copy custom php.ini file for PHP configuration
 COPY ./Docker/php.ini /usr/local/etc/php/conf.d/
